@@ -1,0 +1,149 @@
+// ==UserScript==
+// @name     blacklista wykop
+// @version  1
+// @author lis6502
+// @grant    none
+// @match  https://*.wykop.pl/*
+// @require  https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js
+// ==/UserScript==
+
+
+// tutaj tagi których treści nie chcesz widzieć
+var tagi=[
+	'kononowicz','patostreamy','nsfw','f1',
+  'kanalsportowy','mecz','rower','przegryw','boks',
+	'skoki','rozdajo','pilkanozna','blackpill','redpill',
+  'mgtow','tinder','perfumy','garscnewsow','glupiewykopowezabawy',
+  'wykopaka','p0lka', 'bandarodzynkarzy','mocnyvlog','cyberpunk2077',
+  'hanuszki','wonziu','dupeczkizprzypadku','perlapulnocy','dzicyzapylacze',
+  'dart','szkieletory', 'badoo','bonzo','dailystoic','quokkanadzis', 'cuckold',
+  'julka','bekaztwitterowychjulek','trailerparkboys','chlopakizbarakow',
+  'dziendobry','dobranoc','gonciarz','kontrolanadgarstkow','sanatoriummilosci','krolowezycia','bigbrother',
+  'rowerowyrownik','mirkomodlitwa','tyleczki','dupeczki','wuwunio','friz','stulejacontent','szarpankizzyciem',
+  '2137','wykopobrazapapieza','jp2','antykapitalizm','spacex','nofap','usa','kosmodromtrzeci','trump','maga',
+  'bookmeter','yerbamate','yerba','patologiepolskiegobudownictwa','konkursnanajbardziejgownianymemznosaczem',
+  'galamistrzowsportu','danielmagical','nba','nhl'
+];
+
+
+// częściowe tagi typu #jedzrybechallenge (usuwanie tagów które zaczynają się od słów z poniższej listy)
+var czesciowe_tagi= [
+  'codzienn','atencyjn','sperm','zdrowakobi','zagrubo'
+];
+
+
+// tutaj ludzie których uważasz za szczególnie upierdliwych
+// /!\ ACHTUNG /!\
+// "treści" tych "ludzi" zostaną (w mniej lub bardziej elegancki sposób) z komentarzy. 
+// dodatkowo, odpowiedzi czy wołania tych cudaków także będą ukryte
+// ma to zapobiec sytuacji gdy jakaś atencjuszka wyprodukuje "viralowy" wysryw, ekhm, komentarz i 10 osób pod spodem się striggeruje, umniejszając czytelności znaleziska
+
+var ludzie = [
+  'Damianowski','anonymous_derp','LubiePieski','JanParowka',
+  'daeun','MarcoSpolsky','wykopaka','lubie-sernik','phaxi','Eattrashdiefast',
+  'n0cniarz','maritt','anonekxd','bohomazy','TwujKoshmar','Zielonykubek','dopeboiYSL',
+  'KRZYSZTOF_DZONG_UN','Bananowychlebek','IMPERIUMROMANUM','Morenk4','l3gend','LewCyzud',
+  'MondryPajonk','Zarzutkkake','Paula_pi','PyraPrzeznaczenia','zastuj','szzzzzz','Michael_Scott','tristis-mundi',
+  'fsfdjf','ayyy_lmao','Plotbella','ciootka','JENDZA','vieniasn'
+];
+
+
+// tutaj filtrowanie pozostałych treści - jeśli post dopasuje się do poniższego wyrażenia regularnego, zostanie ukryty
+var nocniarze = [
+  'Ostatnia cyfra', 'to moja pasja','plusa na odwag', 'zegara? biologiczn[y|ego]', 'Ile plus..? dostanie', 'Ec?h{2,}', 'Izrael', 'majonez.*[Kielecki.*|winiary]',
+  'Bzdurom pod tramwaj','Mam do.a','fajen','Plusujcie.*nikt nigdy nie plusuje','zawsze dostaje plusy, a co z.*\?',
+  '([0-9]{3,} ?){1,} ?- ?([0-9]{3,} ?){1,} ?= ?([0-9]{3,} ?){1,}','żeby nakryć moja żonę co mnie zdradza z robercikiem '
+];
+
+// W TYM MIEJSCU KOŃCZY SIĘ KONFIGUROWALNA CZĘŚĆ
+// KTO CZUJE SIĘ NA SIŁACH NIECH GRZEBIE, YOLO
+
+
+// wywalanie znalezisk "wykop poleca" i jawnej reklamy
+var reklama = $('a[href="https://www.wykop.pl/reklama/"]');
+reklama.parent().parent().parent().parent().remove();
+
+// treści sponsorowane - "content" niebieskich kont (tvpis, regiony, wirtualna polska)
+var sponsy = $('a[href^="https://www.wykop.pl/link/partnerredirect/"]');
+sponsy.parent().parent().parent().parent().remove(); 
+
+// niezalogowani nie widzą (w teorii xD) znalezisk oznaczonych jako +18 - skoro nie mogę w prosty sposób ich podejrzeć to niech giną xD
+var niewidoczne = $('img[data-original="https://www.wykop.pl/cdn/c2526412/18-plus,w207h139.jpg"]');
+niewidoczne.parent().parent().parent().remove(); 
+
+
+
+function schowaj_z_tresci(item,index) {
+  console.log('iteracja dla:' + item);
+	let rex = new RegExp(item, 'i');
+  var tresc = $("ul#itemsStream.comments-stream li.entry.iC div.wblock.lcontrast.dC div div.text p")		// tylko treść posta 
+  				 .not('li.entry.iC ul li div.wblock.lcontrast.dC div div.text p')															// nie komentarz
+  				 .not('p.description.light');																																	// ani nie opis zdjęcia
+  tresc.each(function (index) {
+		if ( rex.test( $(this).text() ) ) {
+// 		    $(this).parent().parent().parent().parent().attr('style', 'border:10px solid red !important');
+		    $(this).parent().parent().parent().parent().remove();
+    }
+   });
+  var tresc_glowna = $('li.link.iC div.article.clearfix.preview.dC div.lcontrast.m-reset-margin h2 a');
+    tresc_glowna.each(function (index) {
+      console.log($(this).text());
+			if ( rex.test( $(this).text() ) ) {
+// 		    $(this).parent().parent().parent().attr('style', 'border:10px solid red !important');
+       $(this).parent().parent().parent().remove();
+
+     }
+   });
+ }
+
+function schowaj_taga(item, index) {
+  let tag_normalny = $('div.text p a.showTagSummary[href="https://www.wykop.pl/tag/' + item +'"]');
+  let tag_spoilery = $('div.text p code.dnone a.showTagSummary[href="https://www.wykop.pl/tag/' + item +'"]');
+  let tag_sp_rozwi = $('div.text p span.text-expanded.dnone a.showTagSummary[href="https://www.wykop.pl/tag/' + item +'"]');
+	let tag_glowna = $('div.fix-tagline a.tag.affect.create[href^="https://www.wykop.pl/tag/' + item +'"]');
+  
+  
+  
+  tag_sp_rozwi.parent().parent().parent().parent().parent().parent().remove() ; //;
+  tag_spoilery.parent().parent().parent().parent().parent().parent().remove(); 
+  tag_normalny.parent().parent().parent().parent().parent().remove();
+  tag_glowna.parent().parent().parent().parent().remove();
+  
+} 
+
+function schowaj_multitaga(item, index) {
+  let tag_normalny = $('div.text p a.showTagSummary[href^="https://www.wykop.pl/tag/' + item +'"]');
+  let tag_spoilery = $('div.text p code.dnone a.showTagSummary[href^="https://www.wykop.pl/tag/' + item +'"]');
+  let tag_sp_rozwi = $('div.text p span.text-expanded.dnone a.showTagSummary[href^="https://www.wykop.pl/tag/' + item +'"]');
+	let tag_glowna = $('div.fix-tagline a.tag.affect.create[href^="https://www.wykop.pl/tag/' + item +'"]');
+  
+  
+  
+  tag_sp_rozwi.parent().parent().parent().parent().parent().parent().remove() ; //attr('style', 'background-color:red !important');;
+  tag_spoilery.parent().parent().parent().parent().parent().parent().remove(); 
+  tag_normalny.parent().parent().parent().parent().parent().remove();
+  tag_glowna.parent().parent().parent().parent().remove();
+  
+} 
+
+function schowaj_ludzia(item, index) {
+  let ludz = $('a.showProfileSummary[href="https://www.wykop.pl/ludzie/' + item + '/"]');
+  ludz.parent().parent().parent().remove(); //attr('style', 'border:1px solid red !important');
+  ludz.parent().parent().remove();
+
+} 
+
+function schowaj_odpowiedz_do_ludzia(item, index) {
+  let ludz = $('div.text p a.showProfileSummary[href="https://www.wykop.pl/ludzie/' + item + '"]');
+	ludz.parent().parent().parent().parent().remove(); // attr('style', 'border:1px solid lime !important');
+//   ludz.parent().parent().remove(); //attr('style', 'background-color:blue !important');
+  
+} 
+
+
+
+nocniarze.forEach(schowaj_z_tresci);
+tagi.forEach(schowaj_taga);
+ludzie.forEach(schowaj_ludzia);
+ludzie.forEach(schowaj_odpowiedz_do_ludzia);
+czesciowe_tagi.forEach(schowaj_multitaga);
