@@ -22,7 +22,13 @@ var tagi=[
   'rowerowyrownik','mirkomodlitwa','tyleczki','dupeczki','wuwunio','friz','stulejacontent','szarpankizzyciem',
   '2137','wykopobrazapapieza','jp2','antykapitalizm','spacex','nofap','usa','kosmodromtrzeci','trump','maga',
   'bookmeter','yerbamate','yerba','patologiepolskiegobudownictwa','konkursnanajbardziejgownianymemznosaczem',
-  'galamistrzowsportu','danielmagical','nba','nhl'
+  'galamistrzowsportu','danielmagical','nba','nhl','mistersoperfect','mumme','loveisland','szczuryposting',
+  'gielda','famemma','gme','weszlo','bananynawieszaku','sagaupunieczki','jablonowski','slubodpierwszegowejrzenia',
+  'szalonewalizki','mangowpis','psychonudles','teczowepaski','kolarstwo','furry','barylkakrwi',
+  'orlen','obajtek'
+  ,'ocenakrytyka','hotelparadise','reprezentacja','randomanimeshit','bojowkapiekarska','sluzebnoscwolfika','theoffice',
+  'parisplatynov','kanapkowyzlodziej','mikrokoksy','mirkokoksy'
+  
 ];
 
 
@@ -44,15 +50,18 @@ var ludzie = [
   'n0cniarz','maritt','anonekxd','bohomazy','TwujKoshmar','Zielonykubek','dopeboiYSL',
   'KRZYSZTOF_DZONG_UN','Bananowychlebek','IMPERIUMROMANUM','Morenk4','l3gend','LewCyzud',
   'MondryPajonk','Zarzutkkake','Paula_pi','PyraPrzeznaczenia','zastuj','szzzzzz','Michael_Scott','tristis-mundi',
-  'fsfdjf','ayyy_lmao','Plotbella','ciootka','JENDZA','vieniasn'
+  'fsfdjf','ayyy_lmao','Plotbella','ciootka','JENDZA','vieniasn','pranko_csv','jestepianke','iks__dee','Dzieci_z_Choroszczy','Pally',
+  'MienciuskiPajonk','Scaab','anoysath','Bdzigost','Moseva'
 ];
 
 
 // tutaj filtrowanie pozostałych treści - jeśli post dopasuje się do poniższego wyrażenia regularnego, zostanie ukryty
 var nocniarze = [
   'Ostatnia cyfra', 'to moja pasja','plusa na odwag', 'zegara? biologiczn[y|ego]', 'Ile plus..? dostanie', 'Ec?h{2,}', 'Izrael', 'majonez.*[Kielecki.*|winiary]',
-  'Bzdurom pod tramwaj','Mam do.a','fajen','Plusujcie.*nikt nigdy nie plusuje','zawsze dostaje plusy, a co z.*\?',
-  '([0-9]{3,} ?){1,} ?- ?([0-9]{3,} ?){1,} ?= ?([0-9]{3,} ?){1,}','żeby nakryć moja żonę co mnie zdradza z robercikiem '
+  'Bzdurom pod tramwaj','Mam do.a','fajen','Plusujcie.*\n?nikt nigdy nie plusuje','zawsze dostaje plusy, a co z.*\?',
+  '([0-9]{3,} ?){1,} ?- ?([0-9]{3,} ?){1,} ?= ?([0-9]{3,} ?){1,}','żeby nakryć moja żonę co mnie zdradza z robercikiem ',
+  'obajt.*'
+  ,'stelmach.{0,4}' 
 ];
 
 // W TYM MIEJSCU KOŃCZY SIĘ KONFIGUROWALNA CZĘŚĆ
